@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HabitMaster</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .container {
+            display: flex;
+            height: 100%;
+        }
+        .menu {
+            width: 30%;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        .header {
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+            font-size: xx-large;
+            text-align: center;
+        }
+        .menu ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            font-family:'Times New Roman', Times, serif;
+        }
+        /* Updated font styles for menu items */
+        .menu ul li {
+            padding: 16px 24px;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: left;
+            transition: transform 0.1s ease, background-color 0.1s ease, box-shadow 0.1s ease;
+            font-family: 'Arial', sans-serif; /* Update the font family */
+            font-size: 26px; /* Update the font size */
+            font-weight:500; /* Update the font weight */
+            color: #333; /* Update the font color */
+            border-bottom: 1px solid #e0e0e0; /* Add a border between menu items */
+            box-sizing: border-box;
+        }
+        .menu ul li:hover {
+            background-color: #e0e0e0;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .menu ul li:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        .menu ul li:last-child {
+            border-bottom: none;
+        }
+        .content {
+            width: 70%;
+            background: linear-gradient(to bottom, #a9e7ff 0%, #ff7ff4 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            flex-direction: column;
+            position: relative;
+            font-size: large;
+        }
+        .activity-container {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            height: 80%;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            z-index: 10;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .add-activity-box {
+            position: relative;
+            margin-top: 30px;
+            padding: 20px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            z-index: 20;
+        }
+        #activityForm {
+            display: flex;
+            flex-direction: column;
+        }
+        #activityForm label {
+            margin-top: 10px;
+        }
+        #activityForm input, #activityForm select {
+            margin-bottom: 10px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #activityForm button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #activityForm button:hover {
+            background-color: #45a049;
+        }
+        #activityDays {
+            height: 100px;
+        }
+        .activity-item {
+            padding: 5px;
+            border-bottom: 1px solid #ccc;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+            font-size: 30px;
+            font-weight: bold;
+            color: #aaa;
+        }
+        .close-btn:hover {
+            color: #ff0000;
+        }
+        .overlay { 
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 15;
+        }
+        .day-checkboxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .day-checkboxes label {
+            cursor: pointer;
+        }
+
+        /* Updated CSS for Vertical Progress Bar */
+        .progress-bar-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 90px;
+        }
+        .progress-bar {
+            height: 400px;
+            width: 200px;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin-right: 60px;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-bar-completed {
+            width: 100%;
+            background-color: #4CAF50;
+            height: 0%;
+            position: absolute;
+            bottom: 0;
+            transition: height 0.5s ease;
+        }
+        .progress-bar-legend {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-left: 60px;
+        }
+        .legend-color-completed,
+        .legend-color-not-completed {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+        }
+        .legend-color-completed {
+            background-color: #4CAF50;
+        }
+        .legend-color-not-completed {
+            background-color: #ddd;
+        }
+        /* CSS for Logout Button */
+        .logout-button {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        .logout-button:hover {
+            background-color: #45a049;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="container">
+    <div class="menu">
+        <div class="header">
+            <h1 id="HabitMasterTitle">HabitMaster</h1>
+        </div>
+        <ul>
+            <li id="activitiesBtn" onclick="toggleActivityContainer()"><img src="/images/activities.png" style="width:40px;height: 40px;">Activities</li>
+            <li id="completedBtn" onclick="toggleCompletedContainer()"><img src="/images/planning.png" style="width:40px;height: 40px;">Completed</li>
+            <li id="progressBtn" onclick="toggleProgressContainer()"><img src="/images/development.png" style="width:40px;height: 40px;">Track Progress</li>
+            <li id="motivationBtn" onclick="toggleMotivationContainer()"><img src="/images/motivation.png" style="width:40px;height: 40px;">Daily Dose of Motivation</li>
+        </ul>        
+    </div>
+    <div class="content">
+        <h2>GOOD HABITS MAKE AN ORDINARY DAY EXTRAORDINARY</h2>
+        
+        <!-- Activity Container -->
+        <div class="activity-container" id="activityContainer">
+            <div class="close-btn" onclick="toggleActivityContainer()">×</div>
+            <div class="activity-header" onclick="openAddActivity()" style="font-size: medium;">Add Activity +</div>
+            
+            <!-- Add Activity Box -->
+            <div class="add-activity-box" id="addActivityBox">
+                <form id="activityForm">
+                    <label for="activityName">Name of Activity</label>
+                    <input type="text" id="activityName" name="activityName" placeholder="Enter activity name">
+                    <label for="activityTime">Time</label>
+                    <input type="time" id="activityTime" name="activityTime">
+                    
+                    <label>Days</label>
+                    <div class="day-checkboxes">
+                        <label><input type="checkbox" name="days" value="mon"> MON</label>
+                        <label><input type="checkbox" name="days" value="tue"> TUE</label>
+                        <label><input type="checkbox" name="days" value="wed"> WED</label>
+                        <label><input type="checkbox" name="days" value="thu"> THU</label>
+                        <label><input type="checkbox" name="days" value="fri"> FRI</label>
+                        <label><input type="checkbox" name="days" value="sat"> SAT</label>
+                        <label><input type="checkbox" name="days" value="sun"> SUN</label>
+                    </div>
+
+                    <button type="button" onclick="addActivity()">ADD</button>
+                </form>
+                <div class="close-btn" onclick="closeAddActivity()">x</div>
+                <div id="addedActivitiesList" class="activities-list"></div>
+            </div>
+            <div id="activitiesList" class="activities-list"></div>
+        </div>
+
+        <!-- Completed Container -->
+        <div class="activity-container" id="completedContainer">
+            <div class="close-btn" onclick="toggleCompletedContainer()">×</div>
+            <div class="activity-header" style="font-size: medium;">Completed Activities</div>
+            
+            <div class="activities-list">
+                <h3>Pending Work</h3>
+                <div id="pendingList"></div>
+            </div>
+
+            <div class="activities-list">
+                <h3>Completed Work</h3>
+                <div id="completedList"></div>
+            </div>
+        </div>
+
+        <!-- Tracking Progress Container -->
+        <div class="activity-container" id="progressContainer">
+            <div class="close-btn" onclick="toggleProgressContainer()">×</div>
+            <div class="activity-header" style="font-size: medium;  font-weight: bold; text-decoration: underline;">Track Progress</div>
+            
+            <!-- Progress Bar -->
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-bar-completed" id="progressBarCompleted"></div>
+                </div>
+                <div class="progress-bar-legend">
+                    <div><span class="legend-color-completed"></span>Completed</div>
+                    <div><span class="legend-color-not-completed"></span>Not Completed</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Content Box for Daily Dose of Motivation -->
+        <div class="activity-container" id="motivationContainer">
+            <div class="close-btn" onclick="toggleMotivationContainer()">×</div>
+            <div class="activity-header" style="font-size: medium; font-weight: bold; text-decoration: underline;">Daily Dose of Motivation</div>
+            
+            <!-- Content for Daily Dose of Motivation -->
+            <div class="motivation-content">
+                <img id="motivationImage" src="" alt="Motivation Image">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#HabitMasterTitle').mousemove(function (e) {
+            var rXP = (e.pageX - this.offsetLeft - $(this).width() / 2);
+            var rYP = (e.pageY - this.offsetTop - $(this).height() / 2);
+            $('#HabitMasterTitle').css('text-shadow', +rYP / 10 + 'px ' + rXP / 80 + 'px rgba(227,6,19,.8), ' + rYP / 8 + 'px ' + rXP / 60 + 'px rgba(255,237,0,1), ' + rXP / 70 + 'px ' + rYP / 12 + 'px rgba(0,159,227,.7)');
+        });
+    });
+</script>
+
+<script>
+    let activities = [];
+    let pendingActivities = [];
+    let completedActivities = [];
+    let currentContainer = null;
+
+    const motivationImages = [
+        'images/WhatsApp Image 2023-12-05 at 14.58.20_a5614bfa.jpg',
+        'images/WhatsApp Image 2023-12-05 at 14.58.22_fcdbc9d4.jpg',
+        'images/WhatsApp Image 2023-12-05 at 14.58.22_ea579afe.jpg',
+        // Add more image URLs as needed
+    ];
+
+    function displayRandomMotivationImage() {
+        const motivationImage = document.getElementById('motivationImage');
+        const randomIndex = Math.floor(Math.random() * motivationImages.length);
+        const randomImageUrl = motivationImages[randomIndex];
+        motivationImage.src = randomImageUrl;
+    }
+
+    function toggleActivityContainer() {
+        var activityContainer = document.getElementById('activityContainer');
+        var isContainerVisible = activityContainer.style.display === 'flex';
+        activityContainer.style.display = isContainerVisible ? 'none' : 'flex';
+        openAddActivity();
+        toggleContainerVisibility("activityContainer");
+    }
+
+    function openAddActivity() {
+        document.getElementById('addActivityBox').style.display = 'block';
+    }
+
+    function closeAddActivity() {
+        document.getElementById('addActivityBox').style        .display = 'none';
+    }
+
+    function addActivity() {
+        var name = document.getElementById('activityName').value;
+        var time = document.getElementById('activityTime').value;
+
+        var daysChecked = document.querySelectorAll('#activityForm input[name="days"]:checked');
+        var days = Array.from(daysChecked).map(cb => cb.value).join(', ');
+
+        activities.push({ name, time, days });
+        pendingActivities.push({ name, time, days });
+
+        updateActivitiesList();
+        updatePendingActivitiesList(); // Update Pending Work list in Completed Activities
+        updateAddedActivitiesList(); // Update Added Activities in the Add Activity + Window
+        closeAddActivity();
+        document.getElementById('activityForm').reset();
+        updateProgressBar();
+    }
+
+    function updateActivitiesList() {
+        var list = document.getElementById('activitiesList');
+        list.innerHTML = '';
+        activities.forEach(activity => {
+            var item = document.createElement('div');
+            item.className = 'activity-item';
+            item.textContent = activity.name;
+            list.appendChild(item);
+        });
+    }
+
+    function toggleCompletedContainer() {
+        var completedContainer = document.getElementById('completedContainer');
+        var isContainerVisible = completedContainer.style.display === 'flex';
+        completedContainer.style.display = isContainerVisible ? 'none' : 'flex';
+        closeAddActivity();
+        toggleContainerVisibility("completedContainer");
+    }
+
+    function moveToCompleted(activityName) {
+        var index = pendingActivities.findIndex(activity => activity.name === activityName);
+        if (index !== -1) {
+            completedActivities.push(pendingActivities[index]);
+            pendingActivities.splice(index, 1);
+            updatePendingActivitiesList();
+            updateCompletedActivitiesList();
+            updateProgressBar();
+        }
+    }
+
+    function updatePendingActivitiesList() {
+        var list = document.getElementById('pendingList');
+        list.innerHTML = '';
+        pendingActivities.forEach(activity => {
+            var item = document.createElement('div');
+            item.className = 'activity-item';
+            item.innerHTML = `<input type="checkbox" onclick="moveToCompleted('${activity.name}')"> ${activity.name}`;
+            list.appendChild(item);
+        });
+    }
+
+    function updateCompletedActivitiesList() {
+        var list = document.getElementById('completedList');
+        list.innerHTML = '';
+        completedActivities.forEach(activity => {
+            var item = document.createElement('div');
+            item.className = 'activity-item';
+            item.textContent = activity.name;
+            list.appendChild(item);
+        });
+    }
+
+    function updateAddedActivitiesList() {
+        var list = document.getElementById('addedActivitiesList');
+        list.innerHTML = '';
+        activities.forEach(activity => {
+            var item = document.createElement('div');
+            item.className = 'activity-item';
+            item.textContent = activity.name;
+            list.appendChild(item);
+        });
+    }
+
+    function toggleProgressContainer() {
+        var progressContainer = document.getElementById('progressContainer');
+        var isContainerVisible = progressContainer.style.display === 'flex';
+        progressContainer.style.display = isContainerVisible ? 'none' : 'flex';
+        closeAddActivity();
+        closeCompletedContainer();
+        updateProgressBar();
+        toggleContainerVisibility("progressContainer");
+    }
+
+    function updateProgressBar() {
+        var totalActivities = activities.length;
+        var completedCount = completedActivities.length;
+        var completedPercentage = totalActivities ? (completedCount / totalActivities) * 100 : 0;
+
+        var progressBarCompleted = document.getElementById('progressBarCompleted');
+        progressBarCompleted.style.height = completedPercentage + '%';
+    }
+
+    document.addEventListener('DOMContentLoaded', updateProgressBar);
+
+    function toggleMotivationContainer() {
+        var motivationContainer = document.getElementById('motivationContainer');
+        var isContainerVisible = motivationContainer.style.display === 'flex';
+        motivationContainer.style.display = isContainerVisible ? 'none' : 'flex';
+
+        // Call the function to display a random image
+        if (!isContainerVisible) {
+            displayRandomMotivationImage();
+            motivationContainer.style.display = 'flex';
+        } else {
+        motivationContainer.style.display = 'none';
+        }
+
+        // Close other containers if open
+        closeActivityContainer();
+        closeCompletedContainer();
+        closeProgressContainer();
+        toggleContainerVisibility("motivationContainer");
+    }
+
+    
+    function logout() {
+        // Redirect to the login page
+        window.location.href = "/login";
+
+        // Replace the current URL in the browser history with the login page URL
+        history.replaceState(null, "", "/login");
+    }
+
+</script>
+
+<!-- Logout Button -->
+<div class="logout-button" onclick="logout()">Logout</div>
+
+
+</body>
+</html>

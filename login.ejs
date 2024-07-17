@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HabitMaster Login/Signup</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+    background: linear-gradient(to bottom, #a9e7ff 0%, #ff7ff4 100%);
+  }
+
+  .container {
+    max-width: 800px;
+    margin: auto;
+    display: flex;
+    height: 100%;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .brand-section {
+    text-align: left;
+  }
+
+  .brand-section h1 {
+    margin: 0;
+    font-family:'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 2.5em; 
+    padding-right: 15%;
+  }
+
+  .brand-section p {
+    color: #ca6b6b;
+    font-family:sans-serif;
+    font-weight:700;
+    padding-right: 15%;
+    text-shadow: 1px 1px 0 var(--color-secondary);
+  }
+
+  .login-section {
+    background: #bcbcbc;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+
+  .login-section h2 {
+    font-weight: 700;
+    color: #914848;
+    font-family:cursive;
+    font-size: 1.5em;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  input[type=email], input[type=password] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    font-weight: 200;
+    border: 1px solid #c7c7c7;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .action-buttons {
+    text-align: right;
+    margin-top: 20px;
+  }
+
+  button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    background: #333;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  button:hover {
+    background: #555;
+  }
+
+  .login-button {
+    margin-left: 10px;
+  }
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --color-primary: #ea3e27;
+  --color-secondary: #f49b90;
+  --color-tertiary: #f28b7d;
+  --color-quaternary: #f07a6a;
+  --color-quinary: #ee6352;
+}
+
+body {
+  min-height: 100vh;
+  font-weight: 300;
+  font-size: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #eff8e2;
+}
+
+.content {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
+.text-shadows {
+  text-shadow: 3px 3px 0 var(--color-secondary), 6px 6px 0 var(--color-tertiary),
+    9px 9px var(--color-quaternary), 12px 12px 0 var(--color-quinary);
+  font-family: bungee, sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: calc(2rem + 5vw);
+  text-align: center;
+  margin: 0;
+  color: var(--color-primary);
+  animation: shadows 1.2s ease-in infinite;
+  letter-spacing: 0.4rem;
+}
+
+@keyframes shadows {
+  0% {
+    text-shadow: none;
+  }
+  10% {
+    transform: translate(-3px, -3px);
+    text-shadow: 3px 3px 0 var(--color-secondary);
+  }
+  20% {
+    transform: translate(-6px, -6px);
+    text-shadow: 3px 3px 0 var(--color-secondary),
+      6px 6px 0 var(--color-tertiary);
+  }
+  30% {
+    transform: translate(-9px, -9px);
+    text-shadow: 3px 3px 0 var(--color-secondary),
+      6px 6px 0 var(--color-tertiary), 9px 9px var(--color-quaternary);
+  }
+  40% {
+    transform: translate(-12px, -12px);
+    text-shadow: 3px 3px 0 var(--color-secondary),
+      6px 6px 0 var(--color-tertiary), 9px 9px var(--color-quaternary),
+      12px 12px 0 var(--color-quinary);
+  }
+  50% {
+    transform: translate(-12px, -12px);
+    text-shadow: 3px 3px 0 var(--color-secondary),
+      6px 6px 0 var(--color-tertiary), 9px 9px var(--color-quaternary),
+      12px 12px 0 var(--color-quinary);
+  }
+  60% {
+    text-shadow: 3px 3px 0 var(--color-secondary),
+      6px 6px 0 var(--color-tertiary), 9px 9px var(--color-quaternary),
+      12px 12px 0 var(--color-quinary);
+  }
+  70% {
+    text-shadow: 3px 3px 0 var(--color-secondary),
+      6px 6px 0 var(--color-tertiary), 9px 9px var(--color-quaternary);
+  }
+  80% {
+    text-shadow: 3px 3px 0 var(--color-secondary),
+      6px 6px 0 var(--color-tertiary);
+  }
+  90% {
+    text-shadow: 3px 3px 0 var(--color-secondary);
+  }
+  100% {
+    text-shadow: none;
+  }
+}
+
+/*
+  --color-primary: #5192ED;
+  --color-secondary: #69A1F0;
+  --color-tertiary: #7EAEF2;
+  --color-quaternary: #90BAF5;
+  --color-quinary: #A2C4F5;
+*/
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="brand-section">
+    <div class="content">
+      <h1 class="text-shadows">HabitMaster</h1>
+    </div>
+    <p>your daily habit tracker</p>
+  </div>
+  <div class="login-section">
+    <h2>LOGIN/SIGNUP</h2>
+    <form onsubmit="loginUser(event)">
+      <input type="email" id="loginEmail" placeholder="Enter your email" required>
+      <input type="password" id="loginPassword" placeholder="Password" required>
+      <div class="action-buttons">
+         <button type="button" onclick="redirectToRegistration()">Register</button>
+         <button type="submit" class="login-button">LOGIN</button>
+      </div>
+   </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function redirectToRegistration() {
+    window.location.href = '/registration';
+  }
+  async function loginUser(event) {
+   event.preventDefault();
+
+   const email = document.getElementById('loginEmail').value;
+   const password = document.getElementById('loginPassword').value;
+
+   const response = await fetch('/login', {
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+         email,
+         password,
+      }),
+   });
+
+   if (response.ok) {
+      // Redirect to /habits after successful login
+      window.location.href = '/habits';
+   } else {
+      alert('Login failed. Please check your email and password.');
+   }
+}
+
+</script>
+
+</body>
+</html>

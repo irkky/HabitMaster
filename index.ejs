@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HabitMaster</title>
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+	    align-items: center;
+	    justify-content: center;
+      background: linear-gradient(to bottom, #a9e7ff 0%, #ff7ff4 100%);
+	  
+    }
+
+.box {
+  padding: 20px;
+	display: flex; 
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.box .inner {
+	width: 400px;
+	height: 200px;
+	line-height: 200px;
+	font-size: 4em;
+	font-family: sans-serif;
+	font-weight: bold;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.box .inner1 {
+	width: 400px;
+	height: 200px;
+	line-height: 200px;
+	font-size: 4em;
+	font-family: sans-serif;
+	font-weight: bold;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.box .inner {
+	background-color: indianred;
+	color: darkred;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.23);
+	transform-origin: right;
+	transform: perspective(100px) rotateY(-15deg);
+}
+
+.box .inner1 {
+	background-color: lightcoral;
+	color: antiquewhite;
+	transform-origin: left;
+	transform: perspective(100px) rotateY(15deg);
+}
+
+.box .inner span {
+	position: absolute;
+	animation: marquee 5s linear infinite;
+}
+
+.box .inner1 span {
+	position: absolute;
+	animation: marquee 5s linear infinite;
+}
+
+.box .inner1 span {
+	animation-delay: 2.5s;
+	left: -100%;
+}
+
+@keyframes marquee {
+	from {
+		left: 100%;
+	}
+
+	to {
+		left: -100%;
+	}
+}
+
+    .enter-button {
+      background-color: indianred;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-family: cursive;
+      font-size: 20px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 10px;
+    }
+
+    .enter-button:hover {
+      background-color: lightcoral;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.23);
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="background">
+  <div class="box">
+    <div class="inner">
+      <span>HabitMaster</span>
+    </div>
+    <div class="inner1">
+      <span>HabitMaster</span>
+    </div>
+</div>
+
+<div class="box">
+  <button class="enter-button" onclick="redirectToLoginPage()">Get Start</button>
+</div>
+
+<script>
+  function redirectToLoginPage() {
+    window.location.href = '/login'; 
+  }
+</script>
+</body>
+</html>
