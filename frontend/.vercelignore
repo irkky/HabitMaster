@@ -1,0 +1,2 @@
+# Add this to your package.json scripts for better Vercel compatibility
+yarn build
