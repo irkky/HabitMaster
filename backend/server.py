@@ -238,4 +238,5 @@ async def get_progress(current_user: dict = Depends(get_current_user)):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+    port = int(os.getenv("PORT", 8000))  # Railway uses PORT environment variable
+    uvicorn.run(app, host="0.0.0.0", port=port)
