@@ -28,8 +28,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# MongoDB connection
-MONGO_URL = os.getenv("MONGO_URL", "mongodb://localhost:27017/habitmaster")
+# MongoDB connection - Railway compatible
+MONGO_URL = os.getenv("MONGODB_URI") or os.getenv("MONGO_URL", "mongodb://localhost:27017/habitmaster")
 client = MongoClient(MONGO_URL)
 db = client.habitmaster
 
