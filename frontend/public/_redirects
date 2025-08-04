@@ -1,6 +1,1 @@
-{
-  "public": true,
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
-}
+/*    /index.html   200
