@@ -1,6 +1,6 @@
 {
-  "name": "habitmaster-frontend",
   "version": 2,
+  "name": "habitmaster-frontend",
   "builds": [
     {
       "src": "frontend/package.json",
@@ -12,12 +12,12 @@
   ],
   "routes": [
     {
+      "src": "/static/(.*)",
+      "dest": "/frontend/static/$1"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/frontend/$1"
+      "dest": "/frontend/index.html"
     }
-  ],
-  "buildCommand": "cd frontend && npm run build",
-  "devCommand": "cd frontend && npm start",
-  "installCommand": "cd frontend && npm install",
-  "outputDirectory": "frontend/build"
+  ]
 }
