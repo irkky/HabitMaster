@@ -15,12 +15,16 @@ load_dotenv()
 
 app = FastAPI(title="HabitMaster API", version="1.0.0")
 
-# CORS middleware
+# CORS middleware for production
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "https://*.vercel.app",  # Vercel frontend
+        "http://localhost:3000",  # Local development
+        "https://localhost:3000",  # Local development with HTTPS
+    ],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
