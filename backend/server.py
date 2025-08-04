@@ -33,8 +33,8 @@ MONGO_URL = os.getenv("MONGODB_URI") or os.getenv("MONGO_URL", "mongodb://localh
 client = MongoClient(MONGO_URL)
 db = client.habitmaster
 
-# JWT settings
-JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "your-secret-key")
+# JWT settings - Railway compatible
+JWT_SECRET_KEY = os.getenv("JWT_SECRET") or os.getenv("JWT_SECRET_KEY", "your-secret-key")
 JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
 JWT_EXPIRE_MINUTES = int(os.getenv("JWT_EXPIRE_MINUTES", "30"))
 
