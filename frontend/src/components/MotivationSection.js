@@ -1,67 +1,67 @@
 import React, { useState, useEffect } from 'react';
 
+const motivationalQuotes = [
+  {
+    text: "The secret of getting ahead is getting started.",
+    author: "Mark Twain"
+  },
+  {
+    text: "Success is the sum of small efforts, repeated day in and day out.",
+    author: "Robert Collier"
+  },
+  {
+    text: "We are what we repeatedly do. Excellence, then, is not an act, but a habit.",
+    author: "Aristotle"
+  },
+  {
+    text: "The groundwork for all happiness is good health.",
+    author: "Leigh Hunt"
+  },
+  {
+    text: "Take care of your body. It's the only place you have to live.",
+    author: "Jim Rohn"
+  },
+  {
+    text: "A year from now you may wish you had started today.",
+    author: "Karen Lamb"
+  },
+  {
+    text: "The best time to plant a tree was 20 years ago. The second best time is now.",
+    author: "Chinese Proverb"
+  }
+];
+
+const motivationalImages = [
+  {
+    emoji: "🌅",
+    title: "New Day, New Opportunities",
+    color: "from-orange-400 to-pink-400"
+  },
+  {
+    emoji: "💪",
+    title: "Strength Grows Daily",
+    color: "from-blue-400 to-purple-400"
+  },
+  {
+    emoji: "🎯",
+    title: "Focus on Your Goals",
+    color: "from-green-400 to-blue-400"
+  },
+  {
+    emoji: "🚀",
+    title: "Progress Over Perfection",
+    color: "from-purple-400 to-pink-400"
+  },
+  {
+    emoji: "🌟",
+    title: "You Are Capable",
+    color: "from-yellow-400 to-orange-400"
+  }
+];
+
 const MotivationSection = () => {
   const [currentQuote, setCurrentQuote] = useState(0);
   const [currentImage, setCurrentImage] = useState(0);
-
-  const motivationalQuotes = [
-    {
-      text: "The secret of getting ahead is getting started.",
-      author: "Mark Twain"
-    },
-    {
-      text: "Success is the sum of small efforts, repeated day in and day out.",
-      author: "Robert Collier"
-    },
-    {
-      text: "We are what we repeatedly do. Excellence, then, is not an act, but a habit.",
-      author: "Aristotle"
-    },
-    {
-      text: "The groundwork for all happiness is good health.",
-      author: "Leigh Hunt"
-    },
-    {
-      text: "Take care of your body. It's the only place you have to live.",
-      author: "Jim Rohn"
-    },
-    {
-      text: "A year from now you may wish you had started today.",
-      author: "Karen Lamb"
-    },
-    {
-      text: "The best time to plant a tree was 20 years ago. The second best time is now.",
-      author: "Chinese Proverb"
-    }
-  ];
-
-  const motivationalImages = [
-    {
-      emoji: "🌅",
-      title: "New Day, New Opportunities",
-      color: "from-orange-400 to-pink-400"
-    },
-    {
-      emoji: "💪",
-      title: "Strength Grows Daily",
-      color: "from-blue-400 to-purple-400"
-    },
-    {
-      emoji: "🎯",
-      title: "Focus on Your Goals",
-      color: "from-green-400 to-blue-400"
-    },
-    {
-      emoji: "🚀",
-      title: "Progress Over Perfection",
-      color: "from-purple-400 to-pink-400"
-    },
-    {
-      emoji: "🌟",
-      title: "You Are Capable",
-      color: "from-yellow-400 to-orange-400"
-    }
-  ];
 
   useEffect(() => {
     // Change quote every 10 seconds
