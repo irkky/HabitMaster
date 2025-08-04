@@ -6,16 +6,13 @@ from pydantic import BaseModel, EmailStr
 from typing import List, Optional
 from datetime import datetime, timedelta
 import os
-from dotenv import load_dotenv
 import bcrypt
 import jwt
 import uuid
 
-load_dotenv()
-
 app = FastAPI(title="HabitMaster API", version="1.0.0")
 
-# CORS middleware for production
+# CORS middleware for Vercel deployment
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -28,15 +25,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# MongoDB connection - Railway compatible
-MONGO_URL = os.getenv("MONGODB_URI") or os.getenv("MONGO_URL", "mongodb://localhost:27017/habitmaster")
+# MongoDB connection - Vercel compatible
+MONGO_URL = os.getenv("MONGODB_URI", "mongodb://localhost:27017/habitmaster")
 client = MongoClient(MONGO_URL)
 db = client.habitmaster
 
-# JWT settings - Railway compatible
-JWT_SECRET_KEY = os.getenv("JWT_SECRET") or os.getenv("JWT_SECRET_KEY", "your-secret-key")
-JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
-JWT_EXPIRE_MINUTES = int(os.getenv("JWT_EXPIRE_MINUTES", "30"))
+# JWT settings - Vercel compatible
+JWT_SECRET_KEY = os.getenv("JWT_SECRET", "your-secret-key")
+JWT_ALGORITHM = "HS256"
+JWT_EXPIRE_MINUTES = 30
 
 security = HTTPBearer()
 
@@ -103,11 +100,11 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
         raise HTTPException(status_code=401, detail="Invalid authentication credentials")
 
 # API Routes
-@app.get("/api/")
+@app.get("/")
 async def root():
     return {"message": "HabitMaster API is running"}
 
-@app.post("/api/register", response_model=dict)
+@app.post("/register", response_model=dict)
 async def register_user(user: UserCreate):
     # Check if user already exists
     existing_user = db.users.find_one({"email": user.email})
@@ -131,7 +128,7 @@ async def register_user(user: UserCreate):
     else:
         raise HTTPException(status_code=500, detail="Failed to register user")
 
-@app.post("/api/login")
+@app.post("/login")
 async def login_user(user: UserLogin):
     # Find user
     db_user = db.users.find_one({"email": user.email})
@@ -150,7 +147,7 @@ async def login_user(user: UserLogin):
         }
     }
 
-@app.get("/api/habits", response_model=List[HabitResponse])
+@app.get("/habits", response_model=List[HabitResponse])
 async def get_habits(current_user: dict = Depends(get_current_user)):
     habits = list(db.habits.find({"user_id": current_user["id"]}))
     return [
@@ -165,7 +162,7 @@ async def get_habits(current_user: dict = Depends(get_current_user)):
         for habit in habits
     ]
 
-@app.post("/api/habits", response_model=dict)
+@app.post("/habits", response_model=dict)
 async def create_habit(habit: HabitCreate, current_user: dict = Depends(get_current_user)):
     habit_doc = {
         "id": str(uuid.uuid4()),
@@ -183,7 +180,7 @@ async def create_habit(habit: HabitCreate, current_user: dict = Depends(get_curr
     else:
         raise HTTPException(status_code=500, detail="Failed to create habit")
 
-@app.get("/api/completed-habits")
+@app.get("/completed-habits")
 async def get_completed_habits(current_user: dict = Depends(get_current_user)):
     today = datetime.now().strftime("%Y-%m-%d")
     habits = list(db.habits.find({"user_id": current_user["id"]}))
@@ -206,7 +203,7 @@ async def get_completed_habits(current_user: dict = Depends(get_current_user)):
     
     return {"completed": completed, "pending": pending}
 
-@app.post("/api/complete-habit")
+@app.post("/complete-habit")
 async def complete_habit(habit_complete: HabitComplete, current_user: dict = Depends(get_current_user)):
     today = datetime.now().strftime("%Y-%m-%d")
     
@@ -220,7 +217,7 @@ async def complete_habit(habit_complete: HabitComplete, current_user: dict = Dep
     else:
         raise HTTPException(status_code=404, detail="Habit not found or already completed")
 
-@app.get("/api/progress")
+@app.get("/progress")
 async def get_progress(current_user: dict = Depends(get_current_user)):
     today = datetime.now().strftime("%Y-%m-%d")
     habits = list(db.habits.find({"user_id": current_user["id"]}))
@@ -236,7 +233,5 @@ async def get_progress(current_user: dict = Depends(get_current_user)):
         "progress_percentage": progress_percentage
     }
 
-if __name__ == "__main__":
-    import uvicorn
-    port = int(os.getenv("PORT", 8000))  # Railway uses PORT environment variable
-    uvicorn.run(app, host="0.0.0.0", port=port)
+# Vercel handler
+handler = app
