@@ -78,6 +78,7 @@ const MotivationSection = () => {
       clearInterval(quoteInterval);
       clearInterval(imageInterval);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleNextQuote = () => {
